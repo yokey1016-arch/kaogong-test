@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reading Desk</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Reading Desk">
+      <div class="brand">
+        <span class="brand-mark">R</span>
+        <div>
+          <strong>Reading Desk</strong>
+          <small>Personal Knowledge Board</small>
+        </div>
+      </div>
+      <nav class="nav" aria-label="主导航">
+        <button class="nav-btn active" data-view="today">今日阅读</button>
+        <button class="nav-btn" data-view="quick">快速卡片</button>
+        <button class="nav-btn" data-view="archive">资料归档</button>
+        <button class="nav-btn" data-view="marked">标记内容</button>
+        <button class="nav-btn" data-view="stats">统计概览</button>
+        <button class="nav-btn" data-view="settings">设置</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="viewTitle">今日阅读</h1>
+          <p id="viewSubtitle">安静整理今天的 5 张材料卡片</p>
+        </div>
+        <div class="today-progress" aria-live="polite">
+          <span>今日完成进度</span>
+          <strong id="todayProgress">0/5</strong>
+        </div>
+      </header>
+
+      <section id="viewRoot" class="view-root" aria-live="polite"></section>
+    </main>
+  </div>
+
+  <button id="quickFloat" class="quick-float" type="button">快速卡片</button>
+
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="材料详情">
+    <div class="modal-panel">
+      <button id="modalClose" class="icon-btn modal-close" type="button" aria-label="关闭">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="./data/questions.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
