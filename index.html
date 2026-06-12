@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>quiet-study-dashboard</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <aside class="sidebar" aria-label="主要导航">
+      <div class="brand">
+        <span class="brand-mark">Q</span>
+        <div>
+          <h1>Reading Desk</h1>
+          <p>quiet-study-dashboard</p>
+        </div>
+      </div>
+      <nav class="nav-list" id="navList">
+        <button class="nav-item active" data-view="daily">今日阅读</button>
+        <button class="nav-item" data-view="quick">快速卡片</button>
+        <button class="nav-item" data-view="archive">资料归档</button>
+        <button class="nav-item" data-view="marked">标记内容</button>
+        <button class="nav-item" data-view="stats">统计概览</button>
+        <button class="nav-item" data-view="settings">设置</button>
+      </nav>
+      <div class="sidebar-note">
+        <span>本地记录</span>
+        <strong id="sidebarProgress">0 项</strong>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Daily Brief</p>
+          <h2 id="viewTitle">今日阅读</h2>
+        </div>
+        <div class="topbar-actions">
+          <span class="progress-pill" id="todayPill">今日 0/5</span>
+          <button class="ghost-button" id="minimalToggle" type="button">极简模式</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-daily" aria-labelledby="dailyHeading">
+        <div class="section-heading">
+          <div>
+            <h3 id="dailyHeading">今日阅读</h3>
+            <p>每天保留 5 张材料卡片，轻量完成即可。</p>
+          </div>
+          <span class="muted" id="dailyCounter">0/5</span>
+        </div>
+        <div id="dailyCard" class="content-card"></div>
+      </section>
+
+      <section class="view" id="view-quick" aria-labelledby="quickHeading">
+        <div class="section-heading">
+          <div>
+            <h3 id="quickHeading">快速卡片</h3>
+            <p>随机打开一张材料卡片，适合碎片时间。</p>
+          </div>
+          <button class="primary-button" id="randomQuickButton" type="button">随机一张</button>
+        </div>
+        <div class="toolbar">
+          <label>分类
+            <select id="quickCategory"></select>
+          </label>
+          <label><input type="checkbox" id="filterUnfinished"> 只看未完成</label>
+          <label><input type="checkbox" id="filterReview"> 只看复看</label>
+          <label><input type="checkbox" id="filterMarked"> 只看标记</label>
+        </div>
+        <div id="quickCard" class="content-card"></div>
+      </section>
+
+      <section class="view" id="view-archive" aria-labelledby="archiveHeading">
+        <div class="section-heading">
+          <div>
+            <h3 id="archiveHeading">资料归档</h3>
+            <p>按分类检索材料，打开后可继续阅读与记录。</p>
+          </div>
+        </div>
+        <div class="toolbar archive-toolbar">
+          <label>分类
+            <select id="archiveCategory"></select>
+          </label>
+          <label class="search-label">搜索
+            <input id="archiveSearch" type="search" placeholder="输入标题或内容关键词">
+          </label>
+        </div>
+        <div class="archive-layout">
+          <div id="archiveList" class="list-panel"></div>
+          <div id="archiveDetail" class="content-card muted-card">请选择一条材料查看详情。</div>
+        </div>
+      </section>
+
+      <section class="view" id="view-marked" aria-labelledby="markedHeading">
+        <div class="section-heading">
+          <div>
+            <h3 id="markedHeading">标记内容</h3>
+            <p>集中查看已标记与需要复看的材料。</p>
+          </div>
+        </div>
+        <div class="split-grid">
+          <article class="panel-card">
+            <h4>已标记</h4>
+            <div id="markedList" class="compact-list"></div>
+          </article>
+          <article class="panel-card">
+            <h4>复看内容</h4>
+            <div id="reviewList" class="compact-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-stats" aria-labelledby="statsHeading">
+        <div class="section-heading">
+          <div>
+            <h3 id="statsHeading">统计概览</h3>
+            <p>以工作面板方式查看本地阅读记录。</p>
+          </div>
+        </div>
+        <div class="stats-grid" id="statsGrid"></div>
+        <div class="panel-card">
+          <h4>分类记录质量</h4>
+          <div id="categoryStats" class="category-bars"></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-settings" aria-labelledby="settingsHeading">
+        <div class="section-heading">
+          <div>
+            <h3 id="settingsHeading">设置</h3>
+            <p>外观、资料导入导出与本地记录管理。</p>
+          </div>
+        </div>
+        <div class="settings-grid">
+          <article class="panel-card">
+            <h4>外观偏好</h4>
+            <label class="switch-row"><span>深色模式</span><input type="checkbox" id="themeToggle"></label>
+            <label class="switch-row"><span>极简模式</span><input type="checkbox" id="minimalModeSetting"></label>
+          </article>
+          <article class="panel-card">
+            <h4>本地资料</h4>
+            <p class="muted">导入内容会保存在当前浏览器，不会上传。</p>
+            <input id="importFile" type="file" accept="application/json,.json">
+            <div class="button-row">
+              <button class="secondary-button" id="importButton" type="button">导入资料</button>
+              <button class="secondary-button" id="exportButton" type="button">导出记录</button>
+              <button class="danger-button" id="resetButton" type="button">清空本地记录</button>
+            </div>
+            <p id="settingsMessage" class="status-message" role="status"></p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <button class="floating-button" id="floatingQuick" type="button">快速卡片</button>
+
+  <div class="modal-backdrop" id="quickModal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="快速卡片">
+      <div class="modal-header">
+        <h3>快速卡片</h3>
+        <button class="icon-button" id="closeModal" type="button" aria-label="关闭">×</button>
+      </div>
+      <div id="modalCard" class="content-card"></div>
+    </div>
+  </div>
+
+  <script src="./data/questions.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
